@@ -6,15 +6,34 @@ The skill text is Lauren's. A generated set of substitutions rewrites only what 
 
 t3-pstack works only inside T3.
 
+## This fork
+
+[ryandotelliott/t3-pstack](https://github.com/ryandotelliott/t3-pstack) follows upstream pstack's review triggers. It removes the original T3 port's automatic adversarial review for every bug fix, feature, and refactor. Contested designs still use `/interrogate`, and you can request it explicitly. Runtime verification, formal-verification skills, T3 dispatch, model settings, and the plugin name remain available.
+
+### Switch an existing installation
+
+Remove the old marketplace in each Claude Code and Codex config home that uses it. For the default homes, run the following commands. Skip the command for a harness you do not use.
+
+```shell
+claude plugin marketplace remove t3-pstack
+codex plugin marketplace remove t3-pstack
+npx -y github:ryandotelliott/t3-pstack install --source ryandotelliott/t3-pstack
+npx -y github:ryandotelliott/t3-pstack doctor --source ryandotelliott/t3-pstack
+```
+
+For another config home, pass its path through `CLAUDE_CONFIG_DIR` or `CODEX_HOME` when you remove the marketplace. The installer discovers the T3 provider homes and adds the fork wherever the old marketplace has been removed. It leaves a home with a different marketplace source alone.
+
+Restart your T3 sessions after installation. The plugin keeps the `t3-pstack@t3-pstack` ID and reads the existing `~/.config/t3-pstack/models.md`, including `session hook: off`. Keep `--source ryandotelliott/t3-pstack` on future install, update, and doctor commands, because the inherited installer defaults to `chhoumann/t3-pstack`.
+
 ## Install, update, and check
 
 ```shell
-npx -y github:chhoumann/t3-pstack install
-npx -y github:chhoumann/t3-pstack update
-npx -y github:chhoumann/t3-pstack doctor
+npx -y github:ryandotelliott/t3-pstack install --source ryandotelliott/t3-pstack
+npx -y github:ryandotelliott/t3-pstack update --source ryandotelliott/t3-pstack
+npx -y github:ryandotelliott/t3-pstack doctor --source ryandotelliott/t3-pstack
 ```
 
-`npx -y github:chhoumann/t3-pstack` runs the installer from the latest commit on `main`. That is the rolling channel, the same one each home's marketplace auto-updates from. To run one release's installer, name its tag, as in `npx -y github:chhoumann/t3-pstack#v2.2.1 doctor`.
+`npx -y github:ryandotelliott/t3-pstack` runs the fork's installer from the latest commit on `main`. That is the rolling channel, the same one each home's marketplace auto-updates from. To pin the installer to this release, use `npx -y github:ryandotelliott/t3-pstack#v2.2.2 doctor --source ryandotelliott/t3-pstack`.
 
 `install` and `update` are the same command, and a second run changes nothing. With Node 20 or later, it installs or updates the `t3-pstack@t3-pstack` plugin in every Claude Code and Codex config home T3 can run: `~/.claude` and `~/.codex`, `$CLAUDE_CONFIG_DIR` and `$CODEX_HOME`, and the home of each `claudeAgent` and `codex` instance in T3's settings, disabled ones included. Name any other home with `--claude-home <dir>` or `--codex-home <dir>`. Each home's `t3-pstack` marketplace must come from `chhoumann/t3-pstack`, or from `--source <owner/repo|git URL|dir>` on the same run, and a home whose marketplace has another source is left as it is. A local directory needs a path such as `./t3-pstack`, since `owner/repo` always means GitHub. On Codex it also trusts t3-pstack's session-start hook, once its hooks file is the one this release pins. Codex runs a plugin's hook only once it is trusted, and T3's Codex sessions never ask, so without this step the hook never runs. Run `update` after each release.
 

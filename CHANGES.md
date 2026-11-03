@@ -2,6 +2,10 @@
 
 This file is the release changelog, with one `## <version> - <title>` entry per release, newest first. The Cursor-to-T3 rewrite rules live in [`tools/substitutions.json`](tools/substitutions.json), and the [sync boundary](CONTRIBUTING.md#the-sync-boundary) in `CONTRIBUTING.md` defines how a change to upstream's skill content is declared.
 
+## 2.2.2 - Follow upstream review triggers
+
+This fork removes the T3-only blanket `interrogate` trigger for bug fixes, features, and refactors, its three-round review loop, and the added requirement for a reviewer from another model family. It also removes the port-only generic independent-review gate. The upstream trigger for contested designs, explicit `/interrogate` requests, empirical verification, formal-verification skills, and independent runtime verification before shipping remain. The source rewrite rules now preserve that upstream policy during regeneration. The installer and plugin IDs stay the same; use this fork as the marketplace source as described in the README.
+
 ## 2.2.1 - setup-pstack's sheet check reads option values the way orchestrator_capabilities lists them
 
 `orchestrator_capabilities` lists each option's values as a plain array, such as `{ "id": "effort", "values": ["low", "medium", "high"] }` and `{ "id": "fastMode", "values": [false, true] }`. `t3-sheet.mjs` read only the `type` and `options: [{ id }]` shape that its fixture uses. Given the live shape, it allowed no values, so setup-pstack's check rejected every option on every line, valid ones included, with `effort=high is not one of` followed by an empty list. The check now reads `values`, compares each one as a string so `fastMode=true` matches a JSON `true`, and still reads the older shape.

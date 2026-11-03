@@ -161,6 +161,11 @@ describe("applySubstitutions", () => {
       "a Mermaid diagram for states, flows, and structures, and a `/visualize` chart for numbers.",
       "a Mermaid diagram for states, flows, and structures, and an `html_render` chart for numbers.",
     ],
+    [
+      "skills/poteto-mode/SKILL.md",
+      "- Contested design → the **interrogate** skill (multi-model adversarial) before shipping.",
+      "- Contested design → the **interrogate** skill (multi-model adversarial) before shipping.",
+    ],
   ])("%s: an upstream sentence takes the port's one form", (rel, upstream, port) => {
     const { text } = applySubstitutions(upstream, RULES.substitutions, rel);
     expect(text).toBe(port);
@@ -169,8 +174,7 @@ describe("applySubstitutions", () => {
 
   // The T3 behavior the port adds on an upstream anchor: each must survive.
   test.each([
-    ["skills/poteto-mode/SKILL.md", "Interrupt-chained resumes silently drop directives, so fire a fresh subagent with consolidated scope rather than trusting a \"done\" summary.", ["**Dispatch on T3.**", "dispatch ledger", "`BLOCKED: independent review`", "`clientRequestId`"]],
-    ["skills/poteto-mode/SKILL.md", "- Contested design → the **interrogate** skill (multi-model adversarial) before shipping.", ["before Opening a PR", "verified findings block the PR", "After three fix rounds, stop"]],
+    ["skills/poteto-mode/SKILL.md", "Interrupt-chained resumes silently drop directives, so fire a fresh subagent with consolidated scope rather than trusting a \"done\" summary.", ["**Dispatch on T3.**", "dispatch ledger", "`clientRequestId`"]],
     ["skills/arena/SKILL.md", "With the default pool, a Claude parent gets `grok-4.7-xhigh-fast`. A parent from any other family gets `claude-opus-5-5-xhigh` first.", ["no model scores its own work"]],
     ["skills/poteto-mode/playbooks/babysit.md", "Run `drive` and `background` under `/loop` in dynamic mode.", ["--timeout 540", "watch_pull_request", "--settle"]],
     ["skills/poteto-mode/playbooks/autopilot-full.md", "Each owner is a Cursor cloud agent that builds, opens its PR", ["t3_thread_launch", "t3_thread_send"]],
